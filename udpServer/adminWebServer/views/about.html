@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<title>jQuery Syntax</title>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script>
+		function func() {
+			addAttribute();		// 아이디가 "para"인 HTML 요소에 속성을 추가함.
+			createElement();		// 아이디가 "para"인 HTML 요소를 생성함.
+		}
+		function createElement() {
+			var criteriaNode = document.getElementById("text");
+			var newNode = document.createElement("p")
+			newNode.innerHTML = "새로운 단락입니다.";
+			newNode.setAttribute("id", "para");
+			document.body.insertBefore(newNode, criteriaNode);
+		}
+		function addAttribute() {
+			document.getElementById("para").setAttribute("style", "color: red");
+		}
+	</script>
+</head>
+
+<body>
+
+	<h1>아직 생성되지 않은 HTML 요소에 속성 추가</h1>
+
+	<button onclick="func()">속성 추가!</button>
+	<p id="text"></p>
+	
+</body>
+
+</html>
