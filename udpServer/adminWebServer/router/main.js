@@ -18,7 +18,7 @@ module.exports = function (app) {
     });
     //AJAX POST METHOD
     app.post('/api/post', function (req, res) {
-        var databody = req.body;
+        databody = req.body;
         console.log('POST Parameter = ');
         console.log(databody);
         var result = databody.data1 + '  ' + databody.data2 + ' Success';
