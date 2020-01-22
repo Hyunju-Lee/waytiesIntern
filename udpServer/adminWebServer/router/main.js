@@ -8,20 +8,21 @@ module.exports = function (app) {
     app.get('/api', function (req, res) {
         res.render('test.html');
     });
-    //AJAX GET METHOD
-    app.get('/api/get', function (req, res) {
-        var data = req.query.data;
-        console.log('GET Parameter = ' + data);
-        var result = data + ' Success';
-        console.log(result);
-        res.send({ result: result });
-    });
+    // //AJAX GET METHOD
+    // app.get('/api/get', function (req, res) {
+    //     var data = req.query.data;
+    //     console.log('GET Parameter = ' + data);
+    //     var result = data + ' Success';
+    //     console.log(result);
+    //     res.send({ result: result });
+    // });
     //AJAX POST METHOD
     app.post('/api/post', function (req, res) {
-        databody = req.body;
+        var bindata;
+        var databody = req.body;
         console.log('POST Parameter = ');
         console.log(databody);
-        var result = databody.data1 + '  ' + databody.data2 + ' Success';
+        var result = databody.c0101 + '  ' + databody.c0102 + ' Success';
         console.log(result);
 
         var fs = require('fs');

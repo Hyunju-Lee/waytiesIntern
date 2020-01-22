@@ -1,35 +1,36 @@
 <!doctype html>
 <html>
-
 <head>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script>
         $(document).ready(function () {
-            $('#getMethod').click(function () {
-                var get = "cli data"
-                //Ajax GET Method TEST
-                $.ajax({
-                    url: '/api/get',
-                    dataType: 'json',
-                    type: 'GET',
-                    data: { data: get},
-                    success: function (result) {
-                        if (result) {
-                            $('#get_output').html(result.result);
-                        }
-                    }
-                });
-            });
-
             $('#postMethod').click(function () {
-                var post1 = $("#txt").val();
-                var post2 = $("#txt2").val();
+
+                var jsonData = {};
+                var ii = "";
+                var jj = "";
+                for (var i = 0; i < 9; i++) {
+                    if (i > 9) ii = "" + i;
+                    else ii = "0" + i;
+                    for (var j = 0; j < 13; j++) {
+                        if (j > 9) jj = "" + j;
+                        else jj = "0" + j;
+                        // 객체 생성
+                        var num = "c" + ii + jj;
+                        jsonData[num] = $("#" + ii + jj).val();
+                    }
+                }
+
+                // String 형태로 변환
+                var jsonDataStr = JSON.stringify(jsonData);
+                alert(jsonDataStr);
+
                 //Ajax POST Method TEST
                 $.ajax({
                     url: '/api/post',
                     dataType: 'json',
                     type: 'POST',
-                    data: { data1: post1, data2: post2 },
+                    data: jsonData,
                     success: function (result) {
                         if (result) {
                             $('#post_output').html(result.result);
@@ -45,19 +46,22 @@
         div {
             text-align: center;
         }
+
+        table {
+            border: 1px solid #444444;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #444444;
+        }
     </style>
 
 </head>
 
 <body>
-    <h1>Ajax 기본 테스트</h1>
-    <div style="border: 3px solid gray; width: 180px;">
-        <h2>GET</h2>
-        <button id='getMethod'>GET</button>
-        <p id='get_output'>
-            get
-        </p>
-    </div>
+    <h1>신호발생기 - SIGNAL MAP</h1>
     <div style="border: 3px solid gray; width: 180px;">
         <h2>POST</h2>
         <button id='postMethod'>POST</button>
@@ -66,12 +70,151 @@
         </p>
     </div>
     <br>
-    <form action = "/api" method = "post">
-        <input type = "text" value = "tt" id = "txt" /> 
-    </form>
-    <br>
-    <form action = "/api" method = "post">
-        <input type = "text" value = "tt2" id = "txt2" /> 
+
+    <form action="/api" method="post">
+        <table id="mytable">
+            <caption>4지 교차로 4현시</caption>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th width="60">A-ring</th>
+                    <th width="60">A-ring</th>
+                    <th width="60">A-ring</th>
+                    <th width="60">A-ring</th>
+                    <th width="60">time</th>
+                    <th width="60">min</th>
+                    <th width="60">B-ring</th>
+                    <th width="60">B-ring</th>
+                    <th width="60">B-ring</th>
+                    <th width="60">B-ring</th>
+                    <th width="60">time</th>
+                    <th width="60">min</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>1현시</th>
+                    <td><input type="text" value="" style="width:75%;" id="0101" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="0102" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0103" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0104" /></td>
+                    <td><input type="text" value="50" style="width:75%;" id="0105" /></td>
+                    <td><input type="text" value="31" style="width:75%;" id="0106" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0107" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0108" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0109" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="0110" /></td>
+                    <td><input type="text" value="50" style="width:75%;" id="0111" /></td>
+                    <td><input type="text" value="31" style="width:75%;" id="0112" /></td>
+                </tr>
+                <tr>
+                    <th>1현시</th>
+                    <td><input type="text" value="" style="width:75%;" id="0201" /></td>
+                    <td><input type="text" value="20" style="width:75%;" id="0202" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0203" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0204" /></td>
+                    <td><input type="text" value="5" style="width:75%;" id="0205" /></td>
+                    <td><input type="text" value="5" style="width:75%;" id="0206" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0207" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0208" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0209" /></td>
+                    <td><input type="text" value="20" style="width:75%;" id="0210" /></td>
+                    <td><input type="text" value="5" style="width:75%;" id="0211" /></td>
+                    <td><input type="text" value="5" style="width:75%;" id="0212" /></td>
+                </tr>
+                <tr>
+                    <th>2현시</th>
+                    <td><input type="text" value="" style="width:75%;" id="0301" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0302" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0303" /></td>
+                    <td><input type="text" value="01" style="width:75%;" id="0304" /></td>
+                    <td><input type="text" value="20" style="width:75%;" id="0305" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="0306" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0307" /></td>
+                    <td><input type="text" value="01" style="width:75%;" id="0308" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0309" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0310" /></td>
+                    <td><input type="text" value="20" style="width:75%;" id="0311" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="0312" /></td>
+                </tr>
+                <tr>
+                    <th>2현시</th>
+                    <td><input type="text" value="" style="width:75%;" id="0401" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0402" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0403" /></td>
+                    <td><input type="text" value="02" style="width:75%;" id="0404" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="0405" /></td>
+                    <td><input type="text" value="5" style="width:75%;" id="0406" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0407" /></td>
+                    <td><input type="text" value="02" style="width:75%;" id="0408" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0409" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0410" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="0411" /></td>
+                    <td><input type="text" value="5" style="width:75%;" id="0412" /></td>
+                </tr>
+                <tr>
+                    <th>3현시</th>
+                    <td><input type="text" value="" style="width:75%;" id="0501" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0502" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="0503" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0504" /></td>
+                    <td><input type="text" value="50" style="width:75%;" id="0505" /></td>
+                    <td><input type="text" value="45" style="width:75%;" id="0506" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="0507" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0508" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0509" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0510" /></td>
+                    <td><input type="text" value="50" style="width:75%;" id="0511" /></td>
+                    <td><input type="text" value="45" style="width:75%;" id="0512" /></td>
+                </tr>
+                <tr>
+                    <th>3현시</th>
+                    <td><input type="text" value="" style="width:75%;" id="0601" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0602" /></td>
+                    <td><input type="text" value="20" style="width:75%;" id="0603" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0604" /></td>
+                    <td><input type="text" value="5" style="width:75%;" id="0605" /></td>
+                    <td><input type="text" value="5" style="width:75%;" id="0606" /></td>
+                    <td><input type="text" value="20" style="width:75%;" id="0607" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0608" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0609" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0610" /></td>
+                    <td><input type="text" value="5" style="width:75%;" id="0611" /></td>
+                    <td><input type="text" value="5" style="width:75%;" id="0612" /></td>
+                </tr>
+                <tr>
+                    <th>4현시</th>
+                    <td><input type="text" value="01" style="width:75%;" id="0701" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0702" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0703" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0704" /></td>
+                    <td><input type="text" value="20" style="width:75%;" id="0705" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="0706" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0707" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0708" /></td>
+                    <td><input type="text" value="01" style="width:75%;" id="0709" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0710" /></td>
+                    <td><input type="text" value="20" style="width:75%;" id="0711" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="0712" /></td>
+                </tr>
+                <tr>
+                    <th>4현시</th>
+                    <td><input type="text" value="02" style="width:75%;" id="0801" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0802" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0803" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0804" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="0805" /></td>
+                    <td><input type="text" value="5" style="width:75%;" id="0806" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0807" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0808" /></td>
+                    <td><input type="text" value="02" style="width:75%;" id="0809" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="0810" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="0811" /></td>
+                    <td><input type="text" value="5" style="width:75%;" id="0812" /></td>
+                </tr>
+            </tbody>
+        </table>
     </form>
 </body>
+
 </html>
