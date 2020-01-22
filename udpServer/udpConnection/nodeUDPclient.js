@@ -44,6 +44,7 @@ function toArrayBuffer(buf) {
 const connectMessage = setInterval(() => {
     client = dgram.createSocket('udp4');
     console.log('send: ', connect);
+    client.bind(4001);
     client.send(connect, 0, connect.length, port, host);
 
     var uint8View;
@@ -87,6 +88,8 @@ const connectMessage = setInterval(() => {
         }if((uint8View[387]>>5)%2 == 1){
             globalMessage = globalMessage.concat('서보G ');
         }
+        globalMessage = globalMessage.concat("\n현 주기 카운터:", uint8View[432]);
+        globalMessage = globalMessage.concat("\n현시 번호: ", uint8View[433]>>4);
         console.log(globalMessage);
         console.log('Get message back:', uint8View[384], uint8View[385], uint8View[386], uint8View[387]);
         // globalMessage = buffer.toString();

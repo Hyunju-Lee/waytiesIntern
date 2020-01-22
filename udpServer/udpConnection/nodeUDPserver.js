@@ -57,6 +57,7 @@ function updateJSONdataBySigmapdata(messageString) {
     const jsonData = JSON.parse(messageString);
     console.log("traffic data updated");
 
+    jsonData["c00"] = 0;
     jsonData["c01"] = timesum + Number(jsonData.c0105);
     timesum = timesum + Number(jsonData.c0105);
     jsonData["c02"] = timesum + Number(jsonData.c0205);
@@ -73,7 +74,6 @@ function updateJSONdataBySigmapdata(messageString) {
     timesum = timesum + Number(jsonData.c0705);
     jsonData["c08"] = timesum + Number(jsonData.c0805);
     timesum = timesum + Number(jsonData.c0805);
-    console.log(jsonData["c01"], jsonData["c02"], jsonData["c03"], jsonData["c04"], "...")
 
     uint8View.fill(0);
     startTime = new Date().getTime();
@@ -91,164 +91,60 @@ function createBinarydataByJSONdata() {
     trafficTime = (elapsedtime/1000) % datajson.c08;
 
     if(trafficTime < datajson.c01){
-        //*384~391: 방향신호등 출력 상태 bit0: 노란색 추가.
-        uint8View[384] = trafficLightBinary(datajson.c0101 + datajson.c0107);
-        uint8View[385] = trafficLightBinary(datajson.c0102 + datajson.c0108);
-        uint8View[386] = trafficLightBinary(datajson.c0103 + datajson.c0109);
-        uint8View[387] = trafficLightBinary(datajson.c0104 + datajson.c0110);
-        //*392~399: 보행신호 잔여시간 (초)
-        if(uint8View[384] == 32){
-            uint8View[392] = parseInt(datajson.c01 - trafficTime);
-        }
-        if(uint8View[385] == 32){
-            uint8View[393] = parseInt(datajson.c01 - trafficTime);
-        }
-        if(uint8View[386] == 32){
-            uint8View[394] = parseInt(datajson.c01 - trafficTime);
-        }
-        if(uint8View[387] == 32){
-            uint8View[395] = parseInt(datajson.c01 - trafficTime);
-        }
+        cnum = "c01";
+        befcnum = "c00";
+        hyunsi = 1;
+        hyunsinum = "c01";
+        fillDynamicTrafficData(cnum, trafficTime, befcnum, hyunsi, hyunsinum)
         console.log("phase1");
     }else if(trafficTime < datajson.c02){
-        //*384~391: 방향신호등 출력 상태 bit0: 노란색 추가.
-        uint8View[384] = trafficLightBinary(datajson.c0201 + datajson.c0207);
-        uint8View[385] = trafficLightBinary(datajson.c0202 + datajson.c0208);
-        uint8View[386] = trafficLightBinary(datajson.c0203 + datajson.c0209);
-        uint8View[387] = trafficLightBinary(datajson.c0204 + datajson.c0210);
-        //*392~399: 보행신호 잔여시간 (초)
-        if(uint8View[384] == 32){
-            uint8View[392] = parseInt(datajson.c02 - trafficTime);
-        }
-        if(uint8View[385] == 32){
-            uint8View[393] = parseInt(datajson.c02 - trafficTime);
-        }
-        if(uint8View[386] == 32){
-            uint8View[394] = parseInt(datajson.c02 - trafficTime);
-        }
-        if(uint8View[387] == 32){
-            uint8View[395] = parseInt(datajson.c02 - trafficTime);
-        }
+        cnum = "c02";
+        befcnum = "c01";
+        hyunsi = 1;
+        hyunsinum = "c01";
+        fillDynamicTrafficData(cnum, trafficTime, befcnum, hyunsi, hyunsinum)
         console.log("phase2");
     }else if(trafficTime < datajson.c03){
-        //*384~391: 방향신호등 출력 상태 bit0: 노란색 추가.
-        uint8View[384] = trafficLightBinary(datajson.c0301 + datajson.c0307);
-        uint8View[385] = trafficLightBinary(datajson.c0302 + datajson.c0308);
-        uint8View[386] = trafficLightBinary(datajson.c0303 + datajson.c0309);
-        uint8View[387] = trafficLightBinary(datajson.c0304 + datajson.c0310);
-        //*392~399: 보행신호 잔여시간 (초)
-        if(uint8View[384] == 32){
-            uint8View[392] = parseInt(datajson.c03 - trafficTime);
-        }
-        if(uint8View[385] == 32){
-            uint8View[393] = parseInt(datajson.c03 - trafficTime);
-        }
-        if(uint8View[386] == 32){
-            uint8View[394] = parseInt(datajson.c03 - trafficTime);
-        }
-        if(uint8View[387] == 32){
-            uint8View[395] = parseInt(datajson.c03 - trafficTime);
-        }
+        cnum = "c03";
+        befcnum = "c02";
+        hyunsi = 2;
+        hyunsinum = "c03";
+        fillDynamicTrafficData(cnum, trafficTime, befcnum, hyunsi, hyunsinum)
         console.log("phase3");
     }else if(trafficTime < datajson.c04){
-        //*384~391: 방향신호등 출력 상태 bit0: 노란색 추가.
-        uint8View[384] = trafficLightBinary(datajson.c0401 + datajson.c0407);
-        uint8View[385] = trafficLightBinary(datajson.c0402 + datajson.c0408);
-        uint8View[386] = trafficLightBinary(datajson.c0403 + datajson.c0409);
-        uint8View[387] = trafficLightBinary(datajson.c0404 + datajson.c0410);
-        //*392~399: 보행신호 잔여시간 (초)
-        if(uint8View[384] == 32){
-            uint8View[392] = parseInt(datajson.c04 - trafficTime);
-        }
-        if(uint8View[385] == 32){
-            uint8View[393] = parseInt(datajson.c04 - trafficTime);
-        }
-        if(uint8View[386] == 32){
-            uint8View[394] = parseInt(datajson.c04 - trafficTime);
-        }
-        if(uint8View[387] == 32){
-            uint8View[395] = parseInt(datajson.c04 - trafficTime);
-        }
+        cnum = "c04";
+        befcnum = "c03";
+        hyunsi = 2;
+        hyunsinum = "c03";
+        fillDynamicTrafficData(cnum, trafficTime, befcnum, hyunsi, hyunsinum)
         console.log("phase4");
     }else if(trafficTime < datajson.c05){
-        //*384~391: 방향신호등 출력 상태 bit0: 노란색 추가.
-        uint8View[384] = trafficLightBinary(datajson.c0501 + datajson.c0507);
-        uint8View[385] = trafficLightBinary(datajson.c0502 + datajson.c0508);
-        uint8View[386] = trafficLightBinary(datajson.c0503 + datajson.c0509);
-        uint8View[387] = trafficLightBinary(datajson.c0504 + datajson.c0510);
-        //*392~399: 보행신호 잔여시간 (초)
-        if(uint8View[384] == 32){
-            uint8View[392] = parseInt(datajson.c05 - trafficTime);
-        }
-        if(uint8View[385] == 32){
-            uint8View[393] = parseInt(datajson.c05 - trafficTime);
-        }
-        if(uint8View[386] == 32){
-            uint8View[394] = parseInt(datajson.c05 - trafficTime);
-        }
-        if(uint8View[387] == 32){
-            uint8View[395] = parseInt(datajson.c05 - trafficTime);
-        }
+        cnum = "c05";
+        befcnum = "c04";
+        hyunsi = 3;
+        hyunsinum = "c05";
+        fillDynamicTrafficData(cnum, trafficTime, befcnum, hyunsi, hyunsinum)
         console.log("phase5");
     }else if(trafficTime < datajson.c06){
-        //*384~391: 방향신호등 출력 상태 bit0: 노란색 추가.
-        uint8View[384] = trafficLightBinary(datajson.c0601 + datajson.c0607);
-        uint8View[385] = trafficLightBinary(datajson.c0602 + datajson.c0608);
-        uint8View[386] = trafficLightBinary(datajson.c0603 + datajson.c0609);
-        uint8View[387] = trafficLightBinary(datajson.c0604 + datajson.c0610);
-        //*392~399: 보행신호 잔여시간 (초)
-        if(uint8View[384] == 32){
-            uint8View[392] = parseInt(datajson.c06 - trafficTime);
-        }
-        if(uint8View[385] == 32){
-            uint8View[393] = parseInt(datajson.c06 - trafficTime);
-        }
-        if(uint8View[386] == 32){
-            uint8View[394] = parseInt(datajson.c06 - trafficTime);
-        }
-        if(uint8View[387] == 32){
-            uint8View[395] = parseInt(datajson.c06 - trafficTime);
-        }
+        cnum = "c06";
+        befcnum = "c05";
+        hyunsi = 3;
+        hyunsinum = "c05";
+        fillDynamicTrafficData(cnum, trafficTime, befcnum, hyunsi, hyunsinum)
         console.log("phase6");
     }else if(trafficTime < datajson.c07){
-        //*384~391: 방향신호등 출력 상태 bit0: 노란색 추가.
-        uint8View[384] = trafficLightBinary(datajson.c0701 + datajson.c0707);
-        uint8View[385] = trafficLightBinary(datajson.c0702 + datajson.c0708);
-        uint8View[386] = trafficLightBinary(datajson.c0703 + datajson.c0709);
-        uint8View[387] = trafficLightBinary(datajson.c0704 + datajson.c0710);
-        //*392~399: 보행신호 잔여시간 (초)
-        if(uint8View[384] == 32){
-            uint8View[392] = parseInt(datajson.c07 - trafficTime);
-        }
-        if(uint8View[385] == 32){
-            uint8View[393] = parseInt(datajson.c07 - trafficTime);
-        }
-        if(uint8View[386] == 32){
-            uint8View[394] = parseInt(datajson.c07 - trafficTime);
-        }
-        if(uint8View[387] == 32){
-            uint8View[395] = parseInt(datajson.c07 - trafficTime);
-        }
+        cnum = "c07";
+        befcnum = "c06";
+        hyunsi = 4;
+        hyunsinum = "c07";
+        fillDynamicTrafficData(cnum, trafficTime, befcnum, hyunsi, hyunsinum)
         console.log("phase7");
     }else if(trafficTime < datajson.c08){
-        //*384~391: 방향신호등 출력 상태 bit0: 노란색 추가.
-        uint8View[384] = trafficLightBinary(datajson.c0801 + datajson.c0807);
-        uint8View[385] = trafficLightBinary(datajson.c0802 + datajson.c0808);
-        uint8View[386] = trafficLightBinary(datajson.c0803 + datajson.c0809);
-        uint8View[387] = trafficLightBinary(datajson.c0804 + datajson.c0810);
-        //*392~399: 보행신호 잔여시간 (초)
-        if(uint8View[384] == 32){
-            uint8View[392] = parseInt(datajson.c08 - trafficTime);
-        }
-        if(uint8View[385] == 32){
-            uint8View[393] = parseInt(datajson.c08 - trafficTime);
-        }
-        if(uint8View[386] == 32){
-            uint8View[394] = parseInt(datajson.c08 - trafficTime);
-        }
-        if(uint8View[387] == 32){
-            uint8View[395] = parseInt(datajson.c08 - trafficTime);
-        }
+        cnum = "c08";
+        befcnum = "c07";
+        hyunsi = 4;
+        hyunsinum = "c07";
+        fillDynamicTrafficData(cnum, trafficTime, befcnum, hyunsi, hyunsinum)
         console.log("phase8");
     }
     console.log(trafficTime);
@@ -322,5 +218,30 @@ function trafficLightBinary(value)
     return bin;
 }
 
-
+function fillDynamicTrafficData(cnum, trafficTime, befcnum, hyunsi, hyunsinum) {
+    //*384~391: 방향신호등 출력 상태 bit0: 노란색 추가.
+    uint8View[384] = trafficLightBinary(datajson[cnum+"01"] + datajson[cnum+"07"]);
+    uint8View[385] = trafficLightBinary(datajson[cnum+"02"] + datajson[cnum+"08"]);
+    uint8View[386] = trafficLightBinary(datajson[cnum+"03"] + datajson[cnum+"09"]);
+    uint8View[387] = trafficLightBinary(datajson[cnum+"04"] + datajson[cnum+"10"]);
+    //*392~399: 보행신호 잔여시간 (초)
+    if (uint8View[384] == 32) {
+        uint8View[392] = parseInt(datajson[cnum] - trafficTime);
+    }
+    if (uint8View[385] == 32) {
+        uint8View[393] = parseInt(datajson[cnum] - trafficTime);
+    }
+    if (uint8View[386] == 32) {
+        uint8View[394] = parseInt(datajson[cnum] - trafficTime);
+    }
+    if (uint8View[387] == 32) {
+        uint8View[395] = parseInt(datajson[cnum] - trafficTime);
+    }
+    //*432~439: 신호운영 상태변수
+    
+    uint8View[432] = parseInt(trafficTime - datajson[befcnum]); //현 주기 카운터
+    uint8View[433] = (hyunsi << 4) + hyunsi//현시번호 B링 + A링
+    uint8View[434] = parseInt(trafficTime - datajson[hyunsinum]);//A링 현시 카운터
+    uint8View[435] = parseInt(trafficTime - datajson[hyunsinum]);//B링 현시 카운터
+}
 
