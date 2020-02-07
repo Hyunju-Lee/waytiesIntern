@@ -1,12 +1,12 @@
-#waytiesInternProject
+# waytiesInternProject
 
-##3개의 nodejs실행파일로 이루어져있습니다.
-##adminwebserver의 server.js는 신호발생기 에뮬레이터 UI, 
-##udpServer의 nodeUDPserver.js는 신호발생기 에뮬레이터 udpserver,
-##udpClient의 nodeUDPclient.js는 신호수신기 udpclient + 신호등 UI입니다.
+## 3개의 nodejs실행파일로 이루어져있습니다.
+## adminwebserver의 server.js는 신호발생기 에뮬레이터 UI, 
+## udpServer의 nodeUDPserver.js는 신호발생기 에뮬레이터 udpserver,
+## udpClient의 nodeUDPclient.js는 신호수신기 udpclient + 신호등 UI입니다.
 
 
-###***server.js***
+### ***server.js***
 
 adminwebserver의 server.js는 신호발생기 에뮬레이터의 UI부분입니다.
 UI에서 signalmap을 이용하여 신호발생을 구현합니다. 
@@ -17,7 +17,7 @@ signalmap을 채우고 신호발생을 누르면 텍스트 버퍼(buff.txt)에 j
 화면 구성 부분은 html과 jquery, ajax가 이용되었고 서버측은 http와 express가 이용되었습니다.
 
 
-###***nodeUDPserver.js***
+### ***nodeUDPserver.js***
 
 udpServer의 nodeUDPserver.js는 신호발생기 에뮬레이터 udpserver입니다.
 신호발생에 필요한 값들을 주기적으로 polling하여 읽습니다.
@@ -27,7 +27,7 @@ udpServer의 nodeUDPserver.js는 신호발생기 에뮬레이터 udpserver입니
 기본 udp서버 포트는 4000번입니다. 
 udp통신을 하기 위하여 nodejs의 dgram과 udp4가 사용되었습니다.
 
-###***nodeUDPclient.js***
+### ***nodeUDPclient.js***
 
 udpClient의 nodeUDPclient.js는 신호수신기 udpclient + 신호등 UI입니다.
 주기적으로 udpserver에 연결요청을하여 신호데이터를 받아옵니다.
@@ -39,7 +39,7 @@ byte데이터를 해석하여 필요한 값들을 추출합니다.
 udp통신을 하기 위하여 nodejs의 dgram과 udp4가 사용되었습니다.
 실시간으로 그려주기 위하여 socket.io와 http가 사용되었습니다.
 
-###***udp통신 서버와 클라이언트***
+### ***udp통신,서버와 클라이언트***
 
 교통신호발생기와 신호를 수신하여 UI를 그려주는 폴더를 따로 구성하여 응용할 수 있습니다.
 만약 교통신호발생기가 있다면 nodeUDPclient.js만, 교통신호 수신 시스템이 있다면 server.js와 nodeUDPserver.js만 사용할 수 있습니다.
