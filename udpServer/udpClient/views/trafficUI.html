@@ -1,0 +1,118 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Socket</title>
+    <style>
+        * .box {
+            transform: scale(0.6);
+        }
+    </style>
+</head>
+
+<body>
+    <br>
+    <div class="box">
+        <h1 id="mesg">message</h1>
+        <div style="position: absolute;">
+            <div style="position: absolute; top:380px;left: 465px;">
+                <img src="none.png" alt="none" style="transform:rotate(180deg);" id="north1">
+            </div>
+            <div style="position: absolute; top:565px;left: 720px;">
+                <img src="green.png" alt="none" style="transform:rotate(270deg);" id="east1">
+            </div>
+            <div style="position: absolute; top:800px;left: 465px;">
+                <img src="left.png" alt="none" id="south1">
+            </div>
+            <div style="position: absolute; top:565px;left: 200px;">
+                <img src="red.png" alt="none" style="transform:rotate(90deg);" id="west1">
+            </div>
+        </div>
+        <div style="position: absolute;">
+            <div style="position: absolute;top:250px;left:730px;">
+                <img src="walk_red.png" alt="walker_red" width="75px" height="auto" id="north2">
+            </div>
+            <div style="position: absolute; top:700px;left:900px;">
+                <img src="walk_red.png" alt="walker_red" width="75px" height="auto" id="east2">
+            </div>
+            <div style="position: absolute;top:800px;left: 380px;">
+                <img src="walk_red.png" alt="walker_red" width="75px" height="auto" id="south2">
+            </div>
+            <div style="position: absolute;top:330px;left: 250px;">
+                <img src="walk_red.png" alt="walker_red" width="75px" height="auto" id="west2">
+            </div>
+        </div>
+        <img src="crossroad.jpg" alt="crossroad">
+    </div>
+    <script src="/socket.io/socket.io.js"> </script>
+    <script src="http://code.jquery.com/jquery-latest.js"> </script>
+    <script>
+        $(() => {
+            const socket = io();//소켓 연결
+            //메세지 receive
+            socket.on('message', (msg) => {
+                $('#mesg').html(msg);
+                $('#north1').attr("src", "red.png");
+                $('#east1').attr("src", "red.png");
+                $('#south1').attr("src", "red.png");
+                $('#west1').attr("src", "red.png");
+                $('#north2').attr("src", "walk_red.png");
+                $('#east2').attr("src", "walk_red.png");
+                $('#south2').attr("src", "walk_red.png");
+                $('#west2').attr("src", "walk_red.png");
+
+                if (msg.includes("북직G", 0)) {
+                    $('#north1').attr("src", "green.png");
+                } if (msg.includes("북직Y", 0)) {
+                    $('#north1').attr("src", "yellow.png");
+                } if (msg.includes("북좌G", 0)) {
+                    $('#north1').attr("src", "redleft.png");
+                } if (msg.includes("북보G", 0)) {
+                    $('#north2').attr("src", "walk_green.png");
+                } if (msg.includes("북직G", 0) && msg.includes("북좌G", 0)) {
+                    $('#north1').attr("src", "greenleft.png");
+                } if (msg.includes("북직Y", 0) && msg.includes("북좌G", 0)) {
+                    $('#north1').attr("src", "yellowleft.png");
+                } if (msg.includes("동직G", 0)) {
+                    $('#east1').attr("src", "green.png");
+                } if (msg.includes("동직Y", 0)) {
+                    $('#east1').attr("src", "yellow.png");
+                } if (msg.includes("동좌G", 0)) {
+                    $('#east1').attr("src", "redleft.png");
+                } if (msg.includes("동보G", 0)) {
+                    $('#east2').attr("src", "walk_green.png");
+                } if (msg.includes("동직G", 0) && msg.includes("동좌G", 0)) {
+                    $('#east1').attr("src", "greenleft.png");
+                } if (msg.includes("동직Y", 0) && msg.includes("동좌G", 0)) {
+                    $('#east1').attr("src", "yellowleft.png");
+                } if (msg.includes("남직G", 0)) {
+                    $('#south1').attr("src", "green.png");
+                } if (msg.includes("남직Y", 0)) {
+                    $('#south1').attr("src", "yellow.png");
+                } if (msg.includes("남좌G", 0)) {
+                    $('#south1').attr("src", "redleft.png");
+                } if (msg.includes("남보G", 0)) {
+                    $('#south2').attr("src", "walk_green.png");
+                } if (msg.includes("남직G", 0) && msg.includes("남좌G", 0)) {
+                    $('#south1').attr("src", "greenleft.png");
+                } if (msg.includes("남직Y", 0) && msg.includes("남좌G", 0)) {
+                    $('#south1').attr("src", "yellowleft.png");
+                } if (msg.includes("서직G", 0)) {
+                    $('#west1').attr("src", "green.png");
+                } if (msg.includes("서직Y", 0)) {
+                    $('#west1').attr("src", "yellow.png");
+                } if (msg.includes("서좌G", 0)) {
+                    $('#west1').attr("src", "redleft.png");
+                } if (msg.includes("서보G", 0)) {
+                    $('#west2').attr("src", "walk_green.png");
+                } if (msg.includes("서직G", 0) && msg.includes("서좌G", 0)) {
+                    $('#west1').attr("src", "greenleft.png");
+                } if (msg.includes("서직Y", 0) && msg.includes("서좌G", 0)) {
+                    $('#west1').attr("src", "yellowleft.png");
+                }
+            });
+        });    
+    </script>
+</body>
+
+</html>

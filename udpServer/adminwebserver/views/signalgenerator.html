@@ -1,0 +1,356 @@
+<!doctype html>
+<html>
+
+<head>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <style>
+        div {
+            text-align: center;
+        }
+
+        table {
+            border: 1px solid #444444;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #444444;
+            width: 70px;
+        }
+
+        input {
+            font-size: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>신호발생기 - SIGNAL MAP</h1>
+    <div style="border: 3px solid gray; width: 180px; float: left;">
+        <h2>신호발생</h2>
+        <button id='postMethod'>시작</button>
+        <p id='post_output'>
+            ...
+        </p>
+    </div>
+
+    <div style="border: 3px solid gray; width: 180px; float: left;">
+        <h4 style="color: green;">10: 직진</h4>
+        <h4 style="color: yellow;">20: 노란불</h4>
+        <h4 style="color: green;">01: 좌회전</h4>
+        <h4 style="color: yellowgreen;">02: 보행자</h4>
+        <h4 style="color: red;">빈칸: 빨간불</h4>
+    </div>
+    <div style="float: left; border: 3px solid gray; width:fit-content;">
+        <div>
+            <button type="button" id="1hadd">1현시 추가</button>
+        </div>
+        <div>
+            <button type="button" id="2hadd">2현시 추가</button>
+        </div>
+        <div>
+            <button type="button" id="3hadd">3현시 추가</button>
+        </div>
+        <div>
+            <button type="button" id="4hadd">4현시 추가</button>
+        </div>
+    </div>
+
+    <div style="float: left; border: 3px solid gray; width:fit-content;">
+        <div>
+            <button type="button" id="1hdel">1현시 제거</button>
+        </div>
+        <div>
+            <button type="button" id="2hdel">2현시 제거</button>
+        </div>
+        <div>
+            <button type="button" id="3hdel">3현시 제거</button>
+        </div>
+        <div>
+            <button type="button" id="4hdel">4현시 제거</button>
+        </div>
+    </div>
+    <div style="float: left; border: 3px solid gray; width:fit-content;">
+        <div>
+            <h4>Signalmap 구성법 (2중링)</h4>
+            <h4>1. A링과 B링의 1현시+2현시 시간값은 같아야 한다. 3현시+4현시도 마찬가지다.</h4>
+            <h4>2. 같은 시간대에 같은 방향의 A링값과 B링값이 합쳐지는 식으로 구성되어야 한다.</h4>
+            <h4>ex)n~m초에 A링동쪽 10 + B링동쪽 01 = 11 (o) (십의자리 + 일의자리는 가능)</h4>
+            <h4>   n~m초에 A링동쪽 10 + B링동쪽 20 = 30 (x) (십+십이나 일+일의 자리는 불가능)</h4>
+            <h4>3. 직진방향 반대편에 좌회전방향, 좌회전방향 서쪽에 보행자신호등의 신호구성 불가능하다.</h4>
+            <h4>   일상적으로 접하는 신호 구성을 생각하면 된다.</h4>
+        </div>
+    </div>
+
+    <br>
+    <div style="clear:left"></div>
+    <br>
+    <form action="/api" method="post">
+        <table id="mytable">
+            <caption>4지 교차로 4현시</caption>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th colspan="6">A-ring</th colspan="6">
+                    <th colspan="6">B-ring</th colspan="6">
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>북</th>
+                    <th>동</th>
+                    <th>남</th>
+                    <th>서</th>
+                    <th>time</th>
+                    <th>min</th>
+                    <th>북</th>
+                    <th>동</th>
+                    <th>남</th>
+                    <th>서</th>
+                    <th>time</th>
+                    <th>min</th>
+                </tr>
+            </thead>
+        </table>
+        <table>
+            <tbody id="1h">
+                <tr id="1h1m">
+                    <th>1현시</th>
+                    <td><input type="text" value="" style="width:75%;" id="1h1m1s" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="1h1m2s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="1h1m3s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="1h1m4s" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="1h1m5s" /></td>
+                    <td><input type="text" value="3" style="width:75%;" id="1h1m6s" /></td>
+                    <td><input type="text" value="02" style="width:75%;" id="1h1m7s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="1h1m8s" /></td>
+                    <td><input type="text" value="02" style="width:75%;" id="1h1m9s" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="1h1m10s" /></td>
+                    <td><input type="text" value="5" style="width:75%;" id="1h1m11s" /></td>
+                    <td><input type="text" value="3" style="width:75%;" id="1h1m12s" /></td>
+                </tr>
+                <tr id="1h2m">
+                    <th>1현시</th>
+                    <td><input type="text" value="" style="width:75%;" id="1h2m1s" /></td>
+                    <td><input type="text" value="20" style="width:75%;" id="1h2m2s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="1h2m3s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="1h2m4s" /></td>
+                    <td><input type="text" value="2" style="width:75%;" id="1h2m5s" /></td>
+                    <td><input type="text" value="1" style="width:75%;" id="1h2m6s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="1h2m7s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="1h2m8s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="1h2m9s" /></td>
+                    <td><input type="text" value="20" style="width:75%;" id="1h2m10s" /></td>
+                    <td><input type="text" value="2" style="width:75%;" id="1h2m11s" /></td>
+                    <td><input type="text" value="1" style="width:75%;" id="1h2m12s" /></td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tbody id="2h">
+                <tr id="2h1m">
+                    <th>2현시</th>
+                    <td><input type="text" value="" style="width:75%;" id="2h1m1s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="2h1m2s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="2h1m3s" /></td>
+                    <td><input type="text" value="01" style="width:75%;" id="2h1m4s" /></td>
+                    <td><input type="text" value="5" style="width:75%;" id="2h1m5s" /></td>
+                    <td><input type="text" value="3" style="width:75%;" id="2h1m6s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="2h1m7s" /></td>
+                    <td><input type="text" value="01" style="width:75%;" id="2h1m8s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="2h1m9s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="2h1m10s" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="2h1m11s" /></td>
+                    <td><input type="text" value="3" style="width:75%;" id="2h1m12s" /></td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tbody id="3h">
+                <tr id="3h1m">
+                    <th>3현시</th>
+                    <td><input type="text" value="" style="width:75%;" id="3h1m1s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="3h1m2s" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="3h1m3s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="3h1m4s" /></td>
+                    <td><input type="text" value="7" style="width:75%;" id="3h1m5s" /></td>
+                    <td><input type="text" value="3" style="width:75%;" id="3h1m6s" /></td>
+                    <td><input type="text" value="10" style="width:75%;" id="3h1m7s" /></td>
+                    <td><input type="text" value="02" style="width:75%;" id="3h1m8s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="3h1m9s" /></td>
+                    <td><input type="text" value="02" style="width:75%;" id="3h1m10s" /></td>
+                    <td><input type="text" value="7" style="width:75%;" id="3h1m11s" /></td>
+                    <td><input type="text" value="3" style="width:75%;" id="3h1m12s" /></td>
+                </tr>
+                <tr id="3h2m">
+                    <th>3현시</th>
+                    <td><input type="text" value="" style="width:75%;" id="3h2m1s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="3h2m2s" /></td>
+                    <td><input type="text" value="20" style="width:75%;" id="3h2m3s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="3h2m4s" /></td>
+                    <td><input type="text" value="2" style="width:75%;" id="3h2m5s" /></td>
+                    <td><input type="text" value="1" style="width:75%;" id="3h2m6s" /></td>
+                    <td><input type="text" value="20" style="width:75%;" id="3h2m7s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="3h2m8s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="3h2m9s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="3h2m10s" /></td>
+                    <td><input type="text" value="2" style="width:75%;" id="3h2m11s" /></td>
+                    <td><input type="text" value="1" style="width:75%;" id="3h2m12s" /></td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tbody id="4h">
+                <tr id="4h1m">
+                    <th>4현시</th>
+                    <td><input type="text" value="01" style="width:75%;" id="4h1m1s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="4h1m2s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="4h1m3s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="4h1m4s" /></td>
+                    <td><input type="text" value="5" style="width:75%;" id="4h1m5s" /></td>
+                    <td><input type="text" value="3" style="width:75%;" id="4h1m6s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="4h1m7s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="4h1m8s" /></td>
+                    <td><input type="text" value="01" style="width:75%;" id="4h1m9s" /></td>
+                    <td><input type="text" value="" style="width:75%;" id="4h1m10s" /></td>
+                    <td><input type="text" value="5" style="width:75%;" id="4h1m11s" /></td>
+                    <td><input type="text" value="3" style="width:75%;" id="4h1m12s" /></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+
+    <script>
+        var idx1num = 2;
+        var idx2num = 1;
+        var idx3num = 2;
+        var idx4num = 1;
+        var totidxnum = 6;
+        $('#1hadd').on("click", function () {
+            if (idx1num < 9) {
+                idx1num++;
+                totidxnum++;
+                addrow(1, idx1num);
+            }
+
+        });
+        $('#2hadd').on("click", function () {
+            if (idx2num < 9) {
+                idx2num++;
+                totidxnum++;
+                addrow(2, idx2num);
+            }
+        });
+        $('#3hadd').on("click", function () {
+            if (idx3num < 9) {
+                idx3num++;
+                totidxnum++;
+                addrow(3, idx3num);
+            }
+        });
+        $('#4hadd').on("click", function () {
+            if (idx4num < 9) {
+                idx4num++;
+                totidxnum++;
+                addrow(4, idx4num);
+            }
+        });
+        function addrow(hyunsi, idxnum) {
+            // hyunsi와 idxnum로 id부여
+            $('#' + hyunsi + 'h').append(
+                $('<tr id=' + hyunsi + 'h' + idxnum + 'm >').append(
+                    $('<th>').append('' + hyunsi + '현시'),
+                    $('<td>').append($('<input type = "text" value="" style="width:75%;" id = ' + hyunsi + 'h' + idxnum + 'm1s >')),
+                    $('<td>').append($('<input type = "text" value="" style="width:75%;" id = ' + hyunsi + 'h' + idxnum + 'm2s >')),
+                    $('<td>').append($('<input type = "text" value="" style="width:75%;" id = ' + hyunsi + 'h' + idxnum + 'm3s >')),
+                    $('<td>').append($('<input type = "text" value="" style="width:75%;" id = ' + hyunsi + 'h' + idxnum + 'm4s >')),
+                    $('<td>').append($('<input type = "text" value="" style="width:75%;" id = ' + hyunsi + 'h' + idxnum + 'm5s >')),
+                    $('<td>').append($('<input type = "text" value="" style="width:75%;" id = ' + hyunsi + 'h' + idxnum + 'm6s >')),
+                    $('<td>').append($('<input type = "text" value="" style="width:75%;" id = ' + hyunsi + 'h' + idxnum + 'm7s >')),
+                    $('<td>').append($('<input type = "text" value="" style="width:75%;" id = ' + hyunsi + 'h' + idxnum + 'm8s >')),
+                    $('<td>').append($('<input type = "text" value="" style="width:75%;" id = ' + hyunsi + 'h' + idxnum + 'm9s >')),
+                    $('<td>').append($('<input type = "text" value="" style="width:75%;" id = ' + hyunsi + 'h' + idxnum + 'm10s >')),
+                    $('<td>').append($('<input type = "text" value="" style="width:75%;" id = ' + hyunsi + 'h' + idxnum + 'm11s >')),
+                    $('<td>').append($('<input type = "text" value="" style="width:75%;" id = ' + hyunsi + 'h' + idxnum + 'm12s >'))
+                )
+            );
+        }
+
+        $('#1hdel').on("click", function () {
+            if (idx1num > 0) {
+                delrow(1, idx1num);
+                idx1num--;
+                totidxnum--;
+            }
+        });
+        $('#2hdel').on("click", function () {
+            if (idx2num > 0) {
+                delrow(2, idx2num);
+                idx2num--;
+                totidxnum--;
+            }
+        });
+        $('#3hdel').on("click", function () {
+            if (idx3num > 0) {
+                delrow(3, idx3num);
+                idx3num--;
+                totidxnum--;
+            }
+        });
+        $('#4hdel').on("click", function () {
+            if (idx4num > 0) {
+                delrow(4, idx4num);
+                idx4num--;
+                totidxnum--;
+            }
+        });
+        function delrow(hyunsi, idxnum) {
+            // hyunsi와 idxnum로 id부여
+            $('#' + hyunsi + 'h' + idxnum + 'm').remove();
+        }
+
+        //--------------------------------------------------------------------------------------------------------
+
+        $(document).ready(function () {
+            $('#postMethod').click(function () {
+                var jsonData = {};
+                var idxnumber = 0;
+                var tmp = "";
+                for (var h = 1; h <= 4; h++) {//1~4현시
+                    if (h == 1) {
+                        idxnumber = idx1num;
+                    } else if (h == 2) {
+                        idxnumber = idx2num;
+                    } else if (h == 3) {
+                        idxnumber = idx3num;
+                    } else if (h == 4) {
+                        idxnumber = idx4num;
+                    }
+                    jsonData['n' + h] = idxnumber;
+                    for (var m = 1; m <= idxnumber; m++) {
+                        for (var s = 1; s <= 12; s++) {
+                            tmp = "" + h + "h" + m + "m" + s + "s";
+                            jsonData['c' + tmp] = $("#" + tmp).val();
+                        }
+                    }
+                }
+
+                //Ajax POST Method TEST
+                $.ajax({
+                    url: '/api/post',
+                    dataType: 'json',
+                    type: 'POST',
+                    data: jsonData,
+                    success: function (result) {
+                        if (result) {
+                            $('#post_output').html(result.result);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
